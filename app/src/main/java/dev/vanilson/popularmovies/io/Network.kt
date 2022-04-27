@@ -3,7 +3,7 @@ package dev.vanilson.popularmovies.io
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class NetworkUtils {
+class Network {
     companion object {
 
         /** Retorna uma Instância do Client Retrofit para Requisições
