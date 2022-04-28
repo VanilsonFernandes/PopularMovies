@@ -1,7 +1,6 @@
 package dev.vanilson.popularmovies.adapters
 
 import android.content.Context
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -32,10 +31,10 @@ class MoviesAdapter : RecyclerView.Adapter<MoviesAdapter.MoviesAdapterViewHolder
         return if (null == movies) 0 else movies!!.size
     }
 
-//    fun setMovies(movies: List<Movie>?) {
-//        this.movies = movies
-//        notifyDataSetChanged()
-//    }
+    fun updateMovies(movies: List<Movie>?) {
+        this.movies = movies
+        notifyDataSetChanged()
+    }
 //
 //    fun getMovies(): List<Movie>? {
 //        return movies
