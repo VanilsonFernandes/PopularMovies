@@ -10,7 +10,7 @@ class MoviesViewModel() : ViewModel() {
     private val movieService = APIService()
     var movies: MutableLiveData<List<Movie>> = MutableLiveData()
 
-    fun updateMovies(sortMode: String?) {
+    fun getMovies(sortMode: String?) {
         movieService.getMovies(sortMode, movies)
     }
 }

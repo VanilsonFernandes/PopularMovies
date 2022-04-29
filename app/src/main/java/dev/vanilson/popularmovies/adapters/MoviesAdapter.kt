@@ -46,7 +46,7 @@ class MoviesAdapter : RecyclerView.Adapter<MoviesAdapter.MoviesAdapterViewHolder
                 val movie: Movie = movies!![adapterPosition]
                 val intent = Intent(mContext, MovieDetail::class.java)
                 intent.putExtra("movie", movie)
-                mContext!!.startActivity(intent)
+                mContext.startActivity(intent)
             } catch (e: Exception) {
                 e.printStackTrace()
             }

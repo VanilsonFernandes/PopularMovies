@@ -120,4 +120,9 @@ class MovieDetail : AppCompatActivity() {
         vContainer.visibility = View.VISIBLE
         mLoadingIndicator.visibility = View.GONE
     }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return false
+    }
 }

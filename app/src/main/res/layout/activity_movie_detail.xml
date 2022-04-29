@@ -147,16 +147,56 @@
                     app:layout_constraintStart_toStartOf="@+id/tv_movie_synopsis"
                     app:layout_constraintTop_toBottomOf="@+id/tv_movie_synopsis" />
 
+                <TextView
+                    android:id="@+id/tv_trailer"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginEnd="16dp"
+                    android:text="@string/trailers"
+                    android:textAlignment="center"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/view"
+                    app:layout_constraintTop_toBottomOf="@+id/view"
+                    tools:text="Trailers" />
+
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rvTrailers"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
-                    app:layout_constraintEnd_toEndOf="@+id/tv_movie_synopsis"
+                    app:layout_constraintEnd_toEndOf="@+id/tv_trailer"
                     app:layout_constraintHorizontal_bias="1.0"
-                    app:layout_constraintStart_toStartOf="@+id/tv_movie_synopsis"
-                    app:layout_constraintTop_toBottomOf="@+id/view" />
+                    app:layout_constraintStart_toStartOf="@+id/tv_trailer"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_trailer" />
+
+                <View
+                    android:id="@+id/view1"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:background="@android:color/darker_gray"
+                    app:layout_constraintEnd_toEndOf="@+id/rvTrailers"
+                    app:layout_constraintStart_toStartOf="@+id/rvTrailers"
+                    app:layout_constraintTop_toBottomOf="@+id/rvTrailers" />
+
+                <TextView
+                    android:id="@+id/tv_review"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginEnd="16dp"
+                    android:text="@string/reviews"
+                    android:textAlignment="center"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/view1"
+                    app:layout_constraintTop_toBottomOf="@+id/view1"
+                    tools:text="Reviews" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rvReviews"
@@ -165,9 +205,9 @@
                     android:layout_margin="8dp"
                     android:layout_marginEnd="16dp"
                     android:paddingBottom="8dp"
-                    app:layout_constraintEnd_toEndOf="@+id/rvTrailers"
-                    app:layout_constraintStart_toStartOf="@+id/rvTrailers"
-                    app:layout_constraintTop_toBottomOf="@+id/rvTrailers" />
+                    app:layout_constraintEnd_toEndOf="@+id/tv_review"
+                    app:layout_constraintStart_toStartOf="@+id/tv_review"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_review" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>

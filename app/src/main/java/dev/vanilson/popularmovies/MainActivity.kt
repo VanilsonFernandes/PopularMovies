@@ -52,14 +52,14 @@ class MainActivity : AppCompatActivity() {
             mLoadingIndicator.visibility = View.INVISIBLE;
         }
         if (mMoviesViewModel.movies.value == null) {
-            mMoviesViewModel.updateMovies(null)
+            mMoviesViewModel.getMovies(null)
         }
 
     }
 
     private fun loadData(sortMode: String?) {
         mLoadingIndicator.visibility = View.VISIBLE;
-        mMoviesViewModel.updateMovies(sortMode);
+        mMoviesViewModel.getMovies(sortMode);
     }
 
     private fun showErrorMessage() {
