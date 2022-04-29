@@ -1,20 +1,32 @@
 package dev.vanilson.popularmovies.model
 
 import android.os.Parcelable
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 
+@Entity
 @Parcelize
-data class Movie (
-    var id: Int,
+data class Movie(
+
+    @PrimaryKey var id: Int,
+
     @SerializedName("vote_average")
-    var voteAverage: Double,
-    var title: String,
+    @ColumnInfo(name = "vote_average") var voteAverage: Double,
+
+    @ColumnInfo(name = "title") var title: String,
+
     @SerializedName("poster_path")
-    var posterPath: String,
+    @ColumnInfo(name = "poster_path") var posterPath: String,
+
     @SerializedName("backdrop_path")
-    var backdropPath: String,
+    @ColumnInfo(name = "backdrop_path") var backdropPath: String,
+
     @SerializedName("release_date")
-    var releaseDate: String,
-    var overview: String,
-) : Parcelable
+    @ColumnInfo(name = "release_date") var releaseDate: String,
+
+    @ColumnInfo(name = "overview") var overview: String,
+
+    ) : Parcelable

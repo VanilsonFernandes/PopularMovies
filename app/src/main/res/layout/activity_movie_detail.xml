@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/black"
     tools:context=".MovieDetail"
     tools:layout_editor_absoluteY="81dp">
 
@@ -51,6 +52,7 @@
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="8dp"
                     android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                    android:textColor="@color/white"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/iv_movie_poster"
@@ -64,6 +66,7 @@
                     android:layout_marginTop="8dp"
                     android:text="@string/ratingLabel"
                     android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                    android:textColor="@color/white"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tv_movie_title" />
 
@@ -73,6 +76,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:text=""
+                    android:textColor="@color/white"
                     app:layout_constraintBottom_toBottomOf="@+id/textViewRatting"
                     app:layout_constraintStart_toEndOf="@+id/textViewRatting"
                     app:layout_constraintTop_toTopOf="@+id/textViewRatting"
@@ -85,6 +89,7 @@
                     android:layout_marginTop="8dp"
                     android:text="@string/release_date_date_label"
                     android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                    android:textColor="@color/white"
                     app:layout_constraintStart_toStartOf="@+id/textViewRatting"
                     app:layout_constraintTop_toBottomOf="@+id/textViewRatting" />
 
@@ -94,6 +99,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:text=""
+                    android:textColor="@color/white"
                     app:layout_constraintBottom_toBottomOf="@+id/textViewDate"
                     app:layout_constraintStart_toEndOf="@+id/textViewDate"
                     app:layout_constraintTop_toTopOf="@+id/textViewDate"
@@ -106,6 +112,7 @@
                     android:layout_marginTop="8dp"
                     android:text="@string/synopsisLabel"
                     android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                    android:textColor="@color/white"
                     app:layout_constraintStart_toStartOf="@+id/textViewDate"
                     app:layout_constraintTop_toBottomOf="@+id/textViewDate" />
 
@@ -116,6 +123,7 @@
                     android:layout_marginTop="12dp"
                     android:layout_marginEnd="16dp"
                     android:text=""
+                    android:textColor="@color/white"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/textViewSynopsis"
                     app:layout_constraintTop_toBottomOf="@+id/textViewSynopsis"
@@ -131,6 +139,7 @@
                     android:padding="5dp"
                     android:text="@string/favorites"
                     android:textSize="14sp"
+                    android:textColor="@color/white"
                     app:layout_constraintBottom_toBottomOf="@+id/textViewRatting"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/textViewRatting" />
@@ -156,6 +165,7 @@
                     android:text="@string/trailers"
                     android:textAlignment="center"
                     android:textStyle="bold"
+                    android:textColor="@color/white"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/view"
                     app:layout_constraintTop_toBottomOf="@+id/view"
@@ -193,6 +203,7 @@
                     android:text="@string/reviews"
                     android:textAlignment="center"
                     android:textStyle="bold"
+                    android:textColor="@color/white"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/view1"
                     app:layout_constraintTop_toBottomOf="@+id/view1"

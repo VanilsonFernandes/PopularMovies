@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import dev.vanilson.popularmovies.adapters.MoviesAdapter
+import dev.vanilson.popularmovies.database.AppDatabase
 import dev.vanilson.popularmovies.utils.Constants.Companion.NUMBER_OF_COLUMNS
 import dev.vanilson.popularmovies.utils.Constants.Companion.POPULAR_SORTING
 import dev.vanilson.popularmovies.utils.Constants.Companion.TOP_RATED_SORTING
@@ -25,6 +26,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var mMoviesAdapter: MoviesAdapter
     private val mMoviesViewModel: MoviesViewModel by viewModels()
     private var showingFavorites = false
+
+    private val database by lazy { AppDatabase.getDatabase(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -95,7 +98,8 @@ class MainActivity : AppCompatActivity() {
         if (id == R.id.miFavorites) {
             showingFavorites = true
             mMoviesAdapter.movies = null
-//            FavoriteMoviesTask().execute()
+            val movies = this.database.movieDao().getAll()
+            mMoviesViewModel.movies.postValue(movies)
             return true
         }
         return super.onOptionsItemSelected(item)

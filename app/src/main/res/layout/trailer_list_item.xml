@@ -16,7 +16,7 @@
         android:contentDescription="@string/movie_art_description"
         android:scaleType="fitXY"
         android:src="@android:drawable/ic_media_play"
-        app:tint="@android:color/black" />
+        app:tint="@android:color/white" />
 
     <TextView
         android:id="@+id/tv_trailer_name"
@@ -24,6 +24,7 @@
         android:layout_height="wrap_content"
         android:paddingLeft="8dp"
         android:layout_gravity="center_vertical"
+        android:textColor="@color/white"
         tools:text="avengers"/>
 
 </LinearLayout>

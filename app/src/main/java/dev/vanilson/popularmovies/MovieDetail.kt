@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import dev.vanilson.popularmovies.adapters.ReviewsAdapter
 import dev.vanilson.popularmovies.adapters.TrailersAdapter
+import dev.vanilson.popularmovies.database.AppDatabase
 import dev.vanilson.popularmovies.model.Movie
 import dev.vanilson.popularmovies.utils.Constants.Companion.IMG_POSTER_URL
 import dev.vanilson.popularmovies.viewModels.MovieDetailViewModel
@@ -36,6 +37,7 @@ class MovieDetail : AppCompatActivity() {
     private lateinit var mReviewsAdapter: ReviewsAdapter
 
     private val mMovieDetailViewModel: MovieDetailViewModel by viewModels()
+    private val database by lazy { AppDatabase.getDatabase(this) }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -88,7 +90,7 @@ class MovieDetail : AppCompatActivity() {
         tvSynopsis.text = movie?.overview
         tvDate.text = movie?.releaseDate
         Picasso.get().load(IMG_POSTER_URL + movie?.backdropPath).into(ivPoster)
-        cbFavorite.isChecked = false //isFavorite()
+        cbFavorite.isChecked = isFavorite()
 
 
         val reviews = mMovieDetailViewModel.reviews.value
@@ -119,6 +121,36 @@ class MovieDetail : AppCompatActivity() {
     private fun showData() {
         vContainer.visibility = View.VISIBLE
         mLoadingIndicator.visibility = View.GONE
+    }
+
+    private fun addToFavorites() {
+        if (movie != null) {
+            this.database.movieDao().insertAll(movie!!)
+        }
+    }
+
+    private fun removeFromFavorites() {
+        if (movie != null) {
+            this.database.movieDao().delete(movie!!)
+        }
+    }
+
+    fun toggleFavorite(view: View) {
+        if (isFavorite()) {
+            removeFromFavorites()
+            cbFavorite.isChecked = false
+        } else {
+            addToFavorites()
+            cbFavorite.isChecked = true
+        }
+    }
+
+    private fun isFavorite(): Boolean {
+        if (movie != null) {
+            val favorite = this.database.movieDao().findById(movie!!.id)
+            return favorite != null
+        }
+        return false
     }
 
     override fun onSupportNavigateUp(): Boolean {

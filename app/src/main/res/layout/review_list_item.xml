@@ -15,6 +15,7 @@
         android:layout_height="wrap_content"
         android:paddingLeft="8dp"
         android:textStyle="bold"
+        android:textColor="@color/white"
         android:layout_gravity="center_vertical"
         tools:text="Van:"/>
 
@@ -24,6 +25,7 @@
         android:layout_height="wrap_content"
         android:paddingLeft="8dp"
         android:layout_gravity="center_vertical"
+        android:textColor="@color/white"
         tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed egestas sapien velit, a posuere dui mattis in. Nunc egestas mattis urna, non fringilla nibh fringilla in."/>
 
 </LinearLayout>
