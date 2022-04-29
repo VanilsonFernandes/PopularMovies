@@ -3,11 +3,11 @@ package dev.vanilson.popularmovies.viewModels
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import dev.vanilson.popularmovies.model.Movie
-import dev.vanilson.popularmovies.services.MovieService
+import dev.vanilson.popularmovies.services.APIService
 
 class MoviesViewModel() : ViewModel() {
 
-    private val movieService = MovieService()
+    private val movieService = APIService()
     var movies: MutableLiveData<List<Movie>> = MutableLiveData()
 
     fun updateMovies(sortMode: String?) {

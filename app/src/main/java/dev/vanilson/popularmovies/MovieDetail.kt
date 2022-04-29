@@ -6,6 +6,7 @@ import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,6 +16,7 @@ import dev.vanilson.popularmovies.adapters.ReviewsAdapter
 import dev.vanilson.popularmovies.adapters.TrailersAdapter
 import dev.vanilson.popularmovies.model.Movie
 import dev.vanilson.popularmovies.utils.Constants.Companion.IMG_POSTER_URL
+import dev.vanilson.popularmovies.viewModels.MovieDetailViewModel
 
 
 class MovieDetail : AppCompatActivity() {
@@ -32,6 +34,8 @@ class MovieDetail : AppCompatActivity() {
     private lateinit var rvReviews: RecyclerView
     private lateinit var mTrailersAdapter: TrailersAdapter
     private lateinit var mReviewsAdapter: ReviewsAdapter
+
+    private val mMovieDetailViewModel: MovieDetailViewModel by viewModels()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -85,8 +89,31 @@ class MovieDetail : AppCompatActivity() {
         tvDate.text = movie?.releaseDate
         Picasso.get().load(IMG_POSTER_URL + movie?.backdropPath).into(ivPoster)
         cbFavorite.isChecked = false //isFavorite()
-        showData()
 
+
+        val reviews = mMovieDetailViewModel.reviews.value
+        val trailers = mMovieDetailViewModel.trailers.value
+
+        if (reviews == null && trailers == null) {
+            loadData(movie?.id)
+        } else {
+            mReviewsAdapter.setReviews(reviews)
+            mTrailersAdapter.updateTrailers(trailers)
+            showData()
+        }
+
+    }
+
+    private fun loadData(movieId: Int?) {
+        if (movieId != null) {
+            mMovieDetailViewModel.getReviews(movieId).observe(this) { reviews ->
+                mReviewsAdapter.setReviews(reviews)
+            }
+            mMovieDetailViewModel.getTrailers(movieId).observe(this) { trailers ->
+                mTrailersAdapter.updateTrailers(trailers)
+                showData()
+            }
+        }
     }
 
     private fun showData() {

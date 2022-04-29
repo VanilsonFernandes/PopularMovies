@@ -32,6 +32,11 @@ class TrailersAdapter : RecyclerView.Adapter<TrailersAdapter.TrailersAdapterView
         return trailers?.size ?: 0
     }
 
+    fun updateTrailers(trailers: List<Trailer>?) {
+        this.trailers = trailers
+        notifyDataSetChanged()
+    }
+
     inner class TrailersAdapterViewHolder(view: View) :
         RecyclerView.ViewHolder(view), View.OnClickListener {
 
