@@ -24,7 +24,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.view.MovieDetail"
+            android:name=".ui.view.MovieDetailActivity"
             android:parentActivityName=".ui.view.MainActivity"
             android:exported="true">
             <meta-data

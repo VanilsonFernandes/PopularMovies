@@ -1,4 +1,4 @@
-package dev.vanilson.popularmovies.database
+package dev.vanilson.popularmovies.data.database
 
 import android.content.Context
 import androidx.room.Database
@@ -24,7 +24,7 @@ abstract class AppDatabase : RoomDatabase() {
                     context.applicationContext,
                     AppDatabase::class.java,
                     "app_database"
-                ).allowMainThreadQueries().build()
+                ).build()
                 INSTANCE = instance
                 // return instance
                 instance

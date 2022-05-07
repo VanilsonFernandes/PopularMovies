@@ -1,4 +1,4 @@
-package dev.vanilson.popularmovies.database
+package dev.vanilson.popularmovies.data.database
 
 import androidx.room.Dao
 import androidx.room.Delete

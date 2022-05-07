@@ -14,15 +14,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import dev.vanilson.popularmovies.R.id
 import dev.vanilson.popularmovies.R.layout
+import dev.vanilson.popularmovies.data.database.AppDatabase
 import dev.vanilson.popularmovies.data.model.Movie
-import dev.vanilson.popularmovies.database.AppDatabase
 import dev.vanilson.popularmovies.ui.view.adapters.ReviewsAdapter
 import dev.vanilson.popularmovies.ui.view.adapters.TrailersAdapter
 import dev.vanilson.popularmovies.ui.viewModels.MovieDetailViewModel
 import dev.vanilson.popularmovies.utils.Constants.Companion.IMG_POSTER_URL
 
 
-class MovieDetail : AppCompatActivity() {
+class MovieDetailActivity : AppCompatActivity() {
 
     private lateinit var tvTitle: TextView
     private lateinit var tvRating: TextView
@@ -92,19 +92,23 @@ class MovieDetail : AppCompatActivity() {
         tvSynopsis.text = movie?.overview
         tvDate.text = movie?.releaseDate
         Picasso.get().load(IMG_POSTER_URL + movie?.backdropPath).into(ivPoster)
-        cbFavorite.isChecked = isFavorite()
+        cbFavorite.isChecked = false
 
 
         val reviewsVal = mMovieDetailViewModel.reviews.value
         val trailersVal = mMovieDetailViewModel.trailers.value
 
-        mMovieDetailViewModel.reviews.observe(this) { reviews ->
-            mReviewsAdapter.setReviews(reviews)
+        mMovieDetailViewModel.reviews.observe(this) {
+            mReviewsAdapter.setReviews(it)
         }
 
-        mMovieDetailViewModel.trailers.observe(this) { trailers ->
-            mTrailersAdapter.updateTrailers(trailers)
+        mMovieDetailViewModel.trailers.observe(this) {
+            mTrailersAdapter.updateTrailers(it)
             showData()
+        }
+
+        mMovieDetailViewModel.isFavorite.observe(this) {
+            cbFavorite.isChecked = it
         }
 
         if (reviewsVal == null && trailersVal == null) {
@@ -121,6 +125,7 @@ class MovieDetail : AppCompatActivity() {
         if (movieId != null) {
             mMovieDetailViewModel.getReviews(movieId)
             mMovieDetailViewModel.getTrailers(movieId)
+            mMovieDetailViewModel.isFavorite(this.database, movieId)
         }
     }
 
@@ -129,34 +134,20 @@ class MovieDetail : AppCompatActivity() {
         mLoadingIndicator.visibility = View.GONE
     }
 
-    private fun addToFavorites() {
-        if (movie != null) {
-            this.database.movieDao().insertAll(movie!!)
-        }
-    }
-
-    private fun removeFromFavorites() {
-        if (movie != null) {
-            this.database.movieDao().delete(movie!!)
-        }
-    }
-
     fun toggleFavorite(view: View) {
-        if (isFavorite()) {
-            removeFromFavorites()
-            cbFavorite.isChecked = false
-        } else {
-            addToFavorites()
-            cbFavorite.isChecked = true
+        if (movie != null) {
+            if (isFavorite()) {
+                mMovieDetailViewModel.removeFromFavorites(database, movie!!)
+                cbFavorite.isChecked = false
+            } else {
+                mMovieDetailViewModel.addToFavorites(database, movie!!)
+                cbFavorite.isChecked = true
+            }
         }
     }
 
     private fun isFavorite(): Boolean {
-        if (movie != null) {
-            val favorite = this.database.movieDao().findById(movie!!.id)
-            return favorite != null
-        }
-        return false
+        return mMovieDetailViewModel.isFavorite.value == true
     }
 
     override fun onSupportNavigateUp(): Boolean {

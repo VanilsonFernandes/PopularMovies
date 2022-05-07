@@ -3,9 +3,10 @@ package dev.vanilson.popularmovies.ui.viewModels
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dev.vanilson.popularmovies.data.database.AppDatabase
 import dev.vanilson.popularmovies.data.model.Movie
 import dev.vanilson.popularmovies.domain.MovieUseCase
-import dev.vanilson.popularmovies.utils.Constants
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class MoviesViewModel() : ViewModel() {
@@ -14,9 +15,16 @@ class MoviesViewModel() : ViewModel() {
 
     var movieUseCase = MovieUseCase()
 
-    fun getMovies(sortMode: String?) {
+    fun getMovies(sortMode: String) {
         viewModelScope.launch {
-            val result = movieUseCase(sortMode ?: Constants.POPULAR_SORTING)
+            val result = movieUseCase.getMovies(sortMode)
+            movies.postValue(result)
+        }
+    }
+
+    fun getFavoriteMovies(database: AppDatabase) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val result = database.movieDao().getAll()
             movies.postValue(result)
         }
     }

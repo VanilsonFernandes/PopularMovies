@@ -13,9 +13,10 @@ import androidx.recyclerview.widget.RecyclerView
 import dev.vanilson.popularmovies.R
 import dev.vanilson.popularmovies.R.id
 import dev.vanilson.popularmovies.R.layout
-import dev.vanilson.popularmovies.database.AppDatabase
+import dev.vanilson.popularmovies.data.database.AppDatabase
 import dev.vanilson.popularmovies.ui.view.adapters.MoviesAdapter
 import dev.vanilson.popularmovies.ui.viewModels.MoviesViewModel
+import dev.vanilson.popularmovies.utils.Constants.Companion.FAVORITE_SORTING
 import dev.vanilson.popularmovies.utils.Constants.Companion.NUMBER_OF_COLUMNS
 import dev.vanilson.popularmovies.utils.Constants.Companion.POPULAR_SORTING
 import dev.vanilson.popularmovies.utils.Constants.Companion.TOP_RATED_SORTING
@@ -60,13 +61,17 @@ class MainActivity : AppCompatActivity() {
         }
 
         if (mMoviesViewModel.movies.value == null) {
-            mMoviesViewModel.getMovies(null)
+            mMoviesViewModel.getMovies(POPULAR_SORTING)
         }
 
     }
 
-    private fun loadData(sortMode: String?) {
+    private fun loadData(sortMode: String) {
         mLoadingIndicator.visibility = View.VISIBLE;
+        if (sortMode == FAVORITE_SORTING) {
+            mMoviesViewModel.getFavoriteMovies(database)
+            return
+        }
         mMoviesViewModel.getMovies(sortMode);
     }
 
@@ -103,8 +108,7 @@ class MainActivity : AppCompatActivity() {
         if (id == R.id.miFavorites) {
             showingFavorites = true
             mMoviesAdapter.movies = null
-            val movies = this.database.movieDao().getAll()
-            mMoviesViewModel.movies.postValue(movies)
+            loadData(FAVORITE_SORTING)
             return true
         }
         return super.onOptionsItemSelected(item)
