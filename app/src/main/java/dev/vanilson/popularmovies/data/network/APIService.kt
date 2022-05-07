@@ -1,9 +1,12 @@
-package dev.vanilson.popularmovies.services
+package dev.vanilson.popularmovies.data.network
 
 import androidx.lifecycle.MutableLiveData
-import dev.vanilson.popularmovies.io.Endpoint
-import dev.vanilson.popularmovies.io.Network
-import dev.vanilson.popularmovies.model.*
+import dev.vanilson.popularmovies.data.model.Movie
+import dev.vanilson.popularmovies.data.model.MovieResponse
+import dev.vanilson.popularmovies.data.model.Review
+import dev.vanilson.popularmovies.data.model.ReviewResponse
+import dev.vanilson.popularmovies.data.model.Trailer
+import dev.vanilson.popularmovies.data.model.TrailerResponse
 import dev.vanilson.popularmovies.utils.Constants
 import retrofit2.Call
 import retrofit2.Callback

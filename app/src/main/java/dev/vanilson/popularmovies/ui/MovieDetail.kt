@@ -1,4 +1,4 @@
-package dev.vanilson.popularmovies
+package dev.vanilson.popularmovies.ui
 
 import android.os.Bundle
 import android.view.View
@@ -12,12 +12,14 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
+import dev.vanilson.popularmovies.R.id
+import dev.vanilson.popularmovies.R.layout
 import dev.vanilson.popularmovies.adapters.ReviewsAdapter
 import dev.vanilson.popularmovies.adapters.TrailersAdapter
 import dev.vanilson.popularmovies.database.AppDatabase
-import dev.vanilson.popularmovies.model.Movie
+import dev.vanilson.popularmovies.data.model.Movie
 import dev.vanilson.popularmovies.utils.Constants.Companion.IMG_POSTER_URL
-import dev.vanilson.popularmovies.viewModels.MovieDetailViewModel
+import dev.vanilson.popularmovies.ui.viewModels.MovieDetailViewModel
 
 
 class MovieDetail : AppCompatActivity() {
@@ -42,18 +44,18 @@ class MovieDetail : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_movie_detail)
+        setContentView(layout.activity_movie_detail)
 
-        tvTitle = findViewById(R.id.tv_movie_title)
-        tvRating = findViewById(R.id.tv_movie_rating)
-        tvSynopsis = findViewById(R.id.tv_movie_synopsis)
-        tvDate = findViewById(R.id.tv_movie_date)
-        ivPoster = findViewById(R.id.iv_movie_poster)
-        cbFavorite = findViewById(R.id.cb_favorite)
-        mLoadingIndicator = findViewById(R.id.pb_detail_loading_indicator)
-        vContainer = findViewById(R.id.detail_container)
-        rvTrailers = findViewById(R.id.rvTrailers)
-        rvReviews = findViewById(R.id.rvReviews)
+        tvTitle = findViewById(id.tv_movie_title)
+        tvRating = findViewById(id.tv_movie_rating)
+        tvSynopsis = findViewById(id.tv_movie_synopsis)
+        tvDate = findViewById(id.tv_movie_date)
+        ivPoster = findViewById(id.iv_movie_poster)
+        cbFavorite = findViewById(id.cb_favorite)
+        mLoadingIndicator = findViewById(id.pb_detail_loading_indicator)
+        vContainer = findViewById(id.detail_container)
+        rvTrailers = findViewById(id.rvTrailers)
+        rvReviews = findViewById(id.rvReviews)
         mTrailersAdapter = TrailersAdapter()
         mReviewsAdapter = ReviewsAdapter()
         val trailersLayoutManager = LinearLayoutManager(this)

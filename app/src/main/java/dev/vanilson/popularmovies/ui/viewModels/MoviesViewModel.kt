@@ -1,9 +1,9 @@
-package dev.vanilson.popularmovies.viewModels
+package dev.vanilson.popularmovies.ui.viewModels
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import dev.vanilson.popularmovies.model.Movie
-import dev.vanilson.popularmovies.services.APIService
+import dev.vanilson.popularmovies.data.model.Movie
+import dev.vanilson.popularmovies.data.network.APIService
 
 class MoviesViewModel() : ViewModel() {
 

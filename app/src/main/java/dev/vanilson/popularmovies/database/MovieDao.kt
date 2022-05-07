@@ -4,7 +4,7 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
-import dev.vanilson.popularmovies.model.Movie
+import dev.vanilson.popularmovies.data.model.Movie
 
 @Dao
 interface MovieDao {

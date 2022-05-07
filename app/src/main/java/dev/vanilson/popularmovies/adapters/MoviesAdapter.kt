@@ -8,9 +8,9 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
-import dev.vanilson.popularmovies.MovieDetail
+import dev.vanilson.popularmovies.ui.MovieDetail
 import dev.vanilson.popularmovies.R
-import dev.vanilson.popularmovies.model.Movie
+import dev.vanilson.popularmovies.data.model.Movie
 import dev.vanilson.popularmovies.utils.Constants.Companion.IMG_URL
 
 class MoviesAdapter : RecyclerView.Adapter<MoviesAdapter.MoviesAdapterViewHolder?>() {

@@ -1,8 +1,8 @@
-package dev.vanilson.popularmovies.io
+package dev.vanilson.popularmovies.data.network
 
-import dev.vanilson.popularmovies.model.MovieResponse
-import dev.vanilson.popularmovies.model.ReviewResponse
-import dev.vanilson.popularmovies.model.TrailerResponse
+import dev.vanilson.popularmovies.data.model.MovieResponse
+import dev.vanilson.popularmovies.data.model.ReviewResponse
+import dev.vanilson.popularmovies.data.model.TrailerResponse
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path

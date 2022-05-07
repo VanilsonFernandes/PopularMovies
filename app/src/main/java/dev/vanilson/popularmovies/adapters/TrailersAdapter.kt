@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import dev.vanilson.popularmovies.R
-import dev.vanilson.popularmovies.model.Trailer
+import dev.vanilson.popularmovies.data.model.Trailer
 import dev.vanilson.popularmovies.utils.Constants.Companion.YOUTUBE_URL
 
 

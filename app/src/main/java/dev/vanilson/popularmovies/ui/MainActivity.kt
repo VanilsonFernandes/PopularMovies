@@ -1,4 +1,4 @@
-package dev.vanilson.popularmovies
+package dev.vanilson.popularmovies.ui
 
 import android.os.Bundle
 import android.view.Menu
@@ -10,12 +10,15 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import dev.vanilson.popularmovies.R
+import dev.vanilson.popularmovies.R.id
+import dev.vanilson.popularmovies.R.layout
 import dev.vanilson.popularmovies.adapters.MoviesAdapter
 import dev.vanilson.popularmovies.database.AppDatabase
 import dev.vanilson.popularmovies.utils.Constants.Companion.NUMBER_OF_COLUMNS
 import dev.vanilson.popularmovies.utils.Constants.Companion.POPULAR_SORTING
 import dev.vanilson.popularmovies.utils.Constants.Companion.TOP_RATED_SORTING
-import dev.vanilson.popularmovies.viewModels.MoviesViewModel
+import dev.vanilson.popularmovies.ui.viewModels.MoviesViewModel
 
 
 class MainActivity : AppCompatActivity() {
@@ -31,11 +34,11 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(layout.activity_main)
 
-        mRecyclerView = findViewById(R.id.movies_recyclerview)
-        mErrorMessageDisplay = findViewById(R.id.tv_error_message_display)
-        mLoadingIndicator = findViewById(R.id.pb_loading_indicator)
+        mRecyclerView = findViewById(id.movies_recyclerview)
+        mErrorMessageDisplay = findViewById(id.tv_error_message_display)
+        mLoadingIndicator = findViewById(id.pb_loading_indicator)
         mMoviesAdapter = MoviesAdapter()
 
         val layoutManager = GridLayoutManager(this, NUMBER_OF_COLUMNS)
