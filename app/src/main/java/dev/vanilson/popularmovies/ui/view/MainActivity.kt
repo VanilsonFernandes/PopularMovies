@@ -1,4 +1,4 @@
-package dev.vanilson.popularmovies.ui
+package dev.vanilson.popularmovies.ui.view
 
 import android.os.Bundle
 import android.view.Menu
@@ -13,12 +13,12 @@ import androidx.recyclerview.widget.RecyclerView
 import dev.vanilson.popularmovies.R
 import dev.vanilson.popularmovies.R.id
 import dev.vanilson.popularmovies.R.layout
-import dev.vanilson.popularmovies.adapters.MoviesAdapter
 import dev.vanilson.popularmovies.database.AppDatabase
+import dev.vanilson.popularmovies.ui.view.adapters.MoviesAdapter
+import dev.vanilson.popularmovies.ui.viewModels.MoviesViewModel
 import dev.vanilson.popularmovies.utils.Constants.Companion.NUMBER_OF_COLUMNS
 import dev.vanilson.popularmovies.utils.Constants.Companion.POPULAR_SORTING
 import dev.vanilson.popularmovies.utils.Constants.Companion.TOP_RATED_SORTING
-import dev.vanilson.popularmovies.ui.viewModels.MoviesViewModel
 
 
 class MainActivity : AppCompatActivity() {
@@ -48,15 +48,17 @@ class MainActivity : AppCompatActivity() {
         mRecyclerView.adapter = mMoviesAdapter
 
         mLoadingIndicator.visibility = View.VISIBLE;
+
         mMoviesViewModel.movies.observe(this) { movies ->
             mMoviesAdapter.updateMovies(movies)
-            if (movies != null) {
+            if (movies != null && movies.isNotEmpty()) {
                 showDataView()
             } else {
                 showErrorMessage()
             }
             mLoadingIndicator.visibility = View.INVISIBLE;
         }
+
         if (mMoviesViewModel.movies.value == null) {
             mMoviesViewModel.getMovies(null)
         }

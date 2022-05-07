@@ -1,4 +1,4 @@
-package dev.vanilson.popularmovies.ui
+package dev.vanilson.popularmovies.ui.view
 
 import android.os.Bundle
 import android.view.View
@@ -14,12 +14,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import dev.vanilson.popularmovies.R.id
 import dev.vanilson.popularmovies.R.layout
-import dev.vanilson.popularmovies.adapters.ReviewsAdapter
-import dev.vanilson.popularmovies.adapters.TrailersAdapter
-import dev.vanilson.popularmovies.database.AppDatabase
 import dev.vanilson.popularmovies.data.model.Movie
-import dev.vanilson.popularmovies.utils.Constants.Companion.IMG_POSTER_URL
+import dev.vanilson.popularmovies.database.AppDatabase
+import dev.vanilson.popularmovies.ui.view.adapters.ReviewsAdapter
+import dev.vanilson.popularmovies.ui.view.adapters.TrailersAdapter
 import dev.vanilson.popularmovies.ui.viewModels.MovieDetailViewModel
+import dev.vanilson.popularmovies.utils.Constants.Companion.IMG_POSTER_URL
 
 
 class MovieDetail : AppCompatActivity() {
@@ -95,14 +95,23 @@ class MovieDetail : AppCompatActivity() {
         cbFavorite.isChecked = isFavorite()
 
 
-        val reviews = mMovieDetailViewModel.reviews.value
-        val trailers = mMovieDetailViewModel.trailers.value
+        val reviewsVal = mMovieDetailViewModel.reviews.value
+        val trailersVal = mMovieDetailViewModel.trailers.value
 
-        if (reviews == null && trailers == null) {
+        mMovieDetailViewModel.reviews.observe(this) { reviews ->
+            mReviewsAdapter.setReviews(reviews)
+        }
+
+        mMovieDetailViewModel.trailers.observe(this) { trailers ->
+            mTrailersAdapter.updateTrailers(trailers)
+            showData()
+        }
+
+        if (reviewsVal == null && trailersVal == null) {
             loadData(movie?.id)
         } else {
-            mReviewsAdapter.setReviews(reviews)
-            mTrailersAdapter.updateTrailers(trailers)
+            mReviewsAdapter.setReviews(reviewsVal)
+            mTrailersAdapter.updateTrailers(trailersVal)
             showData()
         }
 
@@ -110,13 +119,8 @@ class MovieDetail : AppCompatActivity() {
 
     private fun loadData(movieId: Int?) {
         if (movieId != null) {
-            mMovieDetailViewModel.getReviews(movieId).observe(this) { reviews ->
-                mReviewsAdapter.setReviews(reviews)
-            }
-            mMovieDetailViewModel.getTrailers(movieId).observe(this) { trailers ->
-                mTrailersAdapter.updateTrailers(trailers)
-                showData()
-            }
+            mMovieDetailViewModel.getReviews(movieId)
+            mMovieDetailViewModel.getTrailers(movieId)
         }
     }
 

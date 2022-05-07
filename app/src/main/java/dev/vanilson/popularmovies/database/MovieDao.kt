@@ -12,7 +12,7 @@ interface MovieDao {
     fun getAll(): List<Movie>
 
     @Query("SELECT * FROM movie WHERE id = (:movieId)")
-    fun findById(movieId: Int): Movie
+    fun findById(movieId: Int): Movie?
 
 
     @Insert

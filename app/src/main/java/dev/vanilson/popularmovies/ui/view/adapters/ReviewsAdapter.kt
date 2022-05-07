@@ -1,4 +1,4 @@
-package dev.vanilson.popularmovies.adapters
+package dev.vanilson.popularmovies.ui.view.adapters
 
 import android.content.Context
 import android.view.LayoutInflater

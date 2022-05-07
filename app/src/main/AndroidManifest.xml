@@ -15,7 +15,7 @@
         android:theme="@style/Theme.PopularMovies"
         tools:targetApi="n">
         <activity
-            android:name=".ui.MainActivity"
+            android:name=".ui.view.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,12 +24,12 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.MovieDetail"
-            android:parentActivityName=".ui.MainActivity"
+            android:name=".ui.view.MovieDetail"
+            android:parentActivityName=".ui.view.MainActivity"
             android:exported="true">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.MainActivity" />
+                android:value=".ui.view.MainActivity" />
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>
