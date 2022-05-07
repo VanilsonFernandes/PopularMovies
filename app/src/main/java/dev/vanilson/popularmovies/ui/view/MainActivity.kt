@@ -31,6 +31,8 @@ class MainActivity : AppCompatActivity() {
     private val mMoviesViewModel: MoviesViewModel by viewModels()
     private var showingFavorites = false
 
+    private val SHOWING_FAVORITES_KEY = "showingFavoritesKey"
+
     private val database by lazy { AppDatabase.getDatabase(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -60,10 +62,26 @@ class MainActivity : AppCompatActivity() {
             mLoadingIndicator.visibility = View.INVISIBLE;
         }
 
-        if (mMoviesViewModel.movies.value == null) {
-            mMoviesViewModel.getMovies(POPULAR_SORTING)
-        }
+    }
 
+    override fun onResume() {
+        super.onResume()
+        if (mMoviesViewModel.movies.value == null) {
+            loadData(POPULAR_SORTING)
+        } else if (showingFavorites) {
+            loadData(FAVORITE_SORTING)
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putBoolean(SHOWING_FAVORITES_KEY, showingFavorites);
+        super.onSaveInstanceState(outState)
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+
+        super.onRestoreInstanceState(savedInstanceState)
+        showingFavorites = savedInstanceState.getBoolean(SHOWING_FAVORITES_KEY, false)
     }
 
     private fun loadData(sortMode: String) {
