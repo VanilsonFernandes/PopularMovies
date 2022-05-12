@@ -1,4 +1,4 @@
-package dev.vanilson.popularmovies
+package dev.vanilson.popularmovies.ui.view
 
 import android.os.Bundle
 import android.view.View
@@ -12,15 +12,17 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
-import dev.vanilson.popularmovies.adapters.ReviewsAdapter
-import dev.vanilson.popularmovies.adapters.TrailersAdapter
-import dev.vanilson.popularmovies.database.AppDatabase
-import dev.vanilson.popularmovies.model.Movie
+import dev.vanilson.popularmovies.R.id
+import dev.vanilson.popularmovies.R.layout
+import dev.vanilson.popularmovies.data.database.AppDatabase
+import dev.vanilson.popularmovies.data.model.Movie
+import dev.vanilson.popularmovies.ui.view.adapters.ReviewsAdapter
+import dev.vanilson.popularmovies.ui.view.adapters.TrailersAdapter
+import dev.vanilson.popularmovies.ui.viewModels.MovieDetailViewModel
 import dev.vanilson.popularmovies.utils.Constants.Companion.IMG_POSTER_URL
-import dev.vanilson.popularmovies.viewModels.MovieDetailViewModel
 
 
-class MovieDetail : AppCompatActivity() {
+class MovieDetailActivity : AppCompatActivity() {
 
     private lateinit var tvTitle: TextView
     private lateinit var tvRating: TextView
@@ -42,18 +44,18 @@ class MovieDetail : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_movie_detail)
+        setContentView(layout.activity_movie_detail)
 
-        tvTitle = findViewById(R.id.tv_movie_title)
-        tvRating = findViewById(R.id.tv_movie_rating)
-        tvSynopsis = findViewById(R.id.tv_movie_synopsis)
-        tvDate = findViewById(R.id.tv_movie_date)
-        ivPoster = findViewById(R.id.iv_movie_poster)
-        cbFavorite = findViewById(R.id.cb_favorite)
-        mLoadingIndicator = findViewById(R.id.pb_detail_loading_indicator)
-        vContainer = findViewById(R.id.detail_container)
-        rvTrailers = findViewById(R.id.rvTrailers)
-        rvReviews = findViewById(R.id.rvReviews)
+        tvTitle = findViewById(id.tv_movie_title)
+        tvRating = findViewById(id.tv_movie_rating)
+        tvSynopsis = findViewById(id.tv_movie_synopsis)
+        tvDate = findViewById(id.tv_movie_date)
+        ivPoster = findViewById(id.iv_movie_poster)
+        cbFavorite = findViewById(id.cb_favorite)
+        mLoadingIndicator = findViewById(id.pb_detail_loading_indicator)
+        vContainer = findViewById(id.detail_container)
+        rvTrailers = findViewById(id.rvTrailers)
+        rvReviews = findViewById(id.rvReviews)
         mTrailersAdapter = TrailersAdapter()
         mReviewsAdapter = ReviewsAdapter()
         val trailersLayoutManager = LinearLayoutManager(this)
@@ -90,17 +92,30 @@ class MovieDetail : AppCompatActivity() {
         tvSynopsis.text = movie?.overview
         tvDate.text = movie?.releaseDate
         Picasso.get().load(IMG_POSTER_URL + movie?.backdropPath).into(ivPoster)
-        cbFavorite.isChecked = isFavorite()
+        cbFavorite.isChecked = false
 
 
-        val reviews = mMovieDetailViewModel.reviews.value
-        val trailers = mMovieDetailViewModel.trailers.value
+        val reviewsVal = mMovieDetailViewModel.reviews.value
+        val trailersVal = mMovieDetailViewModel.trailers.value
 
-        if (reviews == null && trailers == null) {
+        mMovieDetailViewModel.reviews.observe(this) {
+            mReviewsAdapter.setReviews(it)
+        }
+
+        mMovieDetailViewModel.trailers.observe(this) {
+            mTrailersAdapter.updateTrailers(it)
+            showData()
+        }
+
+        mMovieDetailViewModel.isFavorite.observe(this) {
+            cbFavorite.isChecked = it
+        }
+
+        if (reviewsVal == null && trailersVal == null) {
             loadData(movie?.id)
         } else {
-            mReviewsAdapter.setReviews(reviews)
-            mTrailersAdapter.updateTrailers(trailers)
+            mReviewsAdapter.setReviews(reviewsVal)
+            mTrailersAdapter.updateTrailers(trailersVal)
             showData()
         }
 
@@ -108,13 +123,9 @@ class MovieDetail : AppCompatActivity() {
 
     private fun loadData(movieId: Int?) {
         if (movieId != null) {
-            mMovieDetailViewModel.getReviews(movieId).observe(this) { reviews ->
-                mReviewsAdapter.setReviews(reviews)
-            }
-            mMovieDetailViewModel.getTrailers(movieId).observe(this) { trailers ->
-                mTrailersAdapter.updateTrailers(trailers)
-                showData()
-            }
+            mMovieDetailViewModel.getReviews(movieId)
+            mMovieDetailViewModel.getTrailers(movieId)
+            mMovieDetailViewModel.isFavorite(this.database, movieId)
         }
     }
 
@@ -123,34 +134,20 @@ class MovieDetail : AppCompatActivity() {
         mLoadingIndicator.visibility = View.GONE
     }
 
-    private fun addToFavorites() {
-        if (movie != null) {
-            this.database.movieDao().insertAll(movie!!)
-        }
-    }
-
-    private fun removeFromFavorites() {
-        if (movie != null) {
-            this.database.movieDao().delete(movie!!)
-        }
-    }
-
     fun toggleFavorite(view: View) {
-        if (isFavorite()) {
-            removeFromFavorites()
-            cbFavorite.isChecked = false
-        } else {
-            addToFavorites()
-            cbFavorite.isChecked = true
+        if (movie != null) {
+            if (isFavorite()) {
+                mMovieDetailViewModel.removeFromFavorites(database, movie!!)
+                cbFavorite.isChecked = false
+            } else {
+                mMovieDetailViewModel.addToFavorites(database, movie!!)
+                cbFavorite.isChecked = true
+            }
         }
     }
 
     private fun isFavorite(): Boolean {
-        if (movie != null) {
-            val favorite = this.database.movieDao().findById(movie!!.id)
-            return favorite != null
-        }
-        return false
+        return mMovieDetailViewModel.isFavorite.value == true
     }
 
     override fun onSupportNavigateUp(): Boolean {

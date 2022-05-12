@@ -1,4 +1,4 @@
-package dev.vanilson.popularmovies.model
+package dev.vanilson.popularmovies.data.model
 
 data class MovieResponse(
     var page: Int,

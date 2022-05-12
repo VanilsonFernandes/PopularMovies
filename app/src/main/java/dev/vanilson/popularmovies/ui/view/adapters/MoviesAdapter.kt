@@ -1,4 +1,4 @@
-package dev.vanilson.popularmovies.adapters
+package dev.vanilson.popularmovies.ui.view.adapters
 
 import android.content.Context
 import android.content.Intent
@@ -8,9 +8,9 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
-import dev.vanilson.popularmovies.MovieDetail
 import dev.vanilson.popularmovies.R
-import dev.vanilson.popularmovies.model.Movie
+import dev.vanilson.popularmovies.data.model.Movie
+import dev.vanilson.popularmovies.ui.view.MovieDetailActivity
 import dev.vanilson.popularmovies.utils.Constants.Companion.IMG_URL
 
 class MoviesAdapter : RecyclerView.Adapter<MoviesAdapter.MoviesAdapterViewHolder?>() {
@@ -44,7 +44,7 @@ class MoviesAdapter : RecyclerView.Adapter<MoviesAdapter.MoviesAdapterViewHolder
         override fun onClick(v: View) {
             try {
                 val movie: Movie = movies!![adapterPosition]
-                val intent = Intent(mContext, MovieDetail::class.java)
+                val intent = Intent(mContext, MovieDetailActivity::class.java)
                 intent.putExtra("movie", movie)
                 mContext.startActivity(intent)
             } catch (e: Exception) {

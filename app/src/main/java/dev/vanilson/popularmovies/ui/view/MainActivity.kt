@@ -1,4 +1,4 @@
-package dev.vanilson.popularmovies
+package dev.vanilson.popularmovies.ui.view
 
 import android.os.Bundle
 import android.view.Menu
@@ -10,12 +10,16 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import dev.vanilson.popularmovies.adapters.MoviesAdapter
-import dev.vanilson.popularmovies.database.AppDatabase
+import dev.vanilson.popularmovies.R
+import dev.vanilson.popularmovies.R.id
+import dev.vanilson.popularmovies.R.layout
+import dev.vanilson.popularmovies.data.database.AppDatabase
+import dev.vanilson.popularmovies.ui.view.adapters.MoviesAdapter
+import dev.vanilson.popularmovies.ui.viewModels.MoviesViewModel
+import dev.vanilson.popularmovies.utils.Constants.Companion.FAVORITE_SORTING
 import dev.vanilson.popularmovies.utils.Constants.Companion.NUMBER_OF_COLUMNS
 import dev.vanilson.popularmovies.utils.Constants.Companion.POPULAR_SORTING
 import dev.vanilson.popularmovies.utils.Constants.Companion.TOP_RATED_SORTING
-import dev.vanilson.popularmovies.viewModels.MoviesViewModel
 
 
 class MainActivity : AppCompatActivity() {
@@ -27,15 +31,17 @@ class MainActivity : AppCompatActivity() {
     private val mMoviesViewModel: MoviesViewModel by viewModels()
     private var showingFavorites = false
 
+    private val SHOWING_FAVORITES_KEY = "showingFavoritesKey"
+
     private val database by lazy { AppDatabase.getDatabase(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(layout.activity_main)
 
-        mRecyclerView = findViewById(R.id.movies_recyclerview)
-        mErrorMessageDisplay = findViewById(R.id.tv_error_message_display)
-        mLoadingIndicator = findViewById(R.id.pb_loading_indicator)
+        mRecyclerView = findViewById(id.movies_recyclerview)
+        mErrorMessageDisplay = findViewById(id.tv_error_message_display)
+        mLoadingIndicator = findViewById(id.pb_loading_indicator)
         mMoviesAdapter = MoviesAdapter()
 
         val layoutManager = GridLayoutManager(this, NUMBER_OF_COLUMNS)
@@ -45,23 +51,45 @@ class MainActivity : AppCompatActivity() {
         mRecyclerView.adapter = mMoviesAdapter
 
         mLoadingIndicator.visibility = View.VISIBLE;
+
         mMoviesViewModel.movies.observe(this) { movies ->
             mMoviesAdapter.updateMovies(movies)
-            if (movies != null) {
+            if (movies != null && movies.isNotEmpty()) {
                 showDataView()
             } else {
                 showErrorMessage()
             }
             mLoadingIndicator.visibility = View.INVISIBLE;
         }
-        if (mMoviesViewModel.movies.value == null) {
-            mMoviesViewModel.getMovies(null)
-        }
 
     }
 
-    private fun loadData(sortMode: String?) {
+    override fun onResume() {
+        super.onResume()
+        if (mMoviesViewModel.movies.value == null) {
+            loadData(POPULAR_SORTING)
+        } else if (showingFavorites) {
+            loadData(FAVORITE_SORTING)
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putBoolean(SHOWING_FAVORITES_KEY, showingFavorites);
+        super.onSaveInstanceState(outState)
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+
+        super.onRestoreInstanceState(savedInstanceState)
+        showingFavorites = savedInstanceState.getBoolean(SHOWING_FAVORITES_KEY, false)
+    }
+
+    private fun loadData(sortMode: String) {
         mLoadingIndicator.visibility = View.VISIBLE;
+        if (sortMode == FAVORITE_SORTING) {
+            mMoviesViewModel.getFavoriteMovies(database)
+            return
+        }
         mMoviesViewModel.getMovies(sortMode);
     }
 
@@ -98,8 +126,7 @@ class MainActivity : AppCompatActivity() {
         if (id == R.id.miFavorites) {
             showingFavorites = true
             mMoviesAdapter.movies = null
-            val movies = this.database.movieDao().getAll()
-            mMoviesViewModel.movies.postValue(movies)
+            loadData(FAVORITE_SORTING)
             return true
         }
         return super.onOptionsItemSelected(item)

@@ -1,10 +1,10 @@
-package dev.vanilson.popularmovies.database
+package dev.vanilson.popularmovies.data.database
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import dev.vanilson.popularmovies.model.Movie
+import dev.vanilson.popularmovies.data.model.Movie
 
 @Database(entities = [Movie::class], version = 1)
 abstract class AppDatabase : RoomDatabase() {
@@ -24,7 +24,7 @@ abstract class AppDatabase : RoomDatabase() {
                     context.applicationContext,
                     AppDatabase::class.java,
                     "app_database"
-                ).allowMainThreadQueries().build()
+                ).build()
                 INSTANCE = instance
                 // return instance
                 instance

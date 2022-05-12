@@ -14,5 +14,6 @@ class Constants {
         const val NUMBER_OF_COLUMNS = 2;
         const val POPULAR_SORTING = "popular";
         const val TOP_RATED_SORTING = "top_rated";
+        const val FAVORITE_SORTING = "favorites";
     }
 }

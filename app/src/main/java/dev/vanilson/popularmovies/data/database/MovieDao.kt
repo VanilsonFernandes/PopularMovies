@@ -1,10 +1,10 @@
-package dev.vanilson.popularmovies.database
+package dev.vanilson.popularmovies.data.database
 
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
-import dev.vanilson.popularmovies.model.Movie
+import dev.vanilson.popularmovies.data.model.Movie
 
 @Dao
 interface MovieDao {
@@ -12,7 +12,7 @@ interface MovieDao {
     fun getAll(): List<Movie>
 
     @Query("SELECT * FROM movie WHERE id = (:movieId)")
-    fun findById(movieId: Int): Movie
+    fun findById(movieId: Int): Movie?
 
 
     @Insert

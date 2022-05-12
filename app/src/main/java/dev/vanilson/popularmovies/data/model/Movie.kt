@@ -1,4 +1,4 @@
-package dev.vanilson.popularmovies.model
+package dev.vanilson.popularmovies.data.model
 
 import android.os.Parcelable
 import androidx.room.ColumnInfo

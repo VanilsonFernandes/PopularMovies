@@ -1,4 +1,4 @@
-package dev.vanilson.popularmovies.adapters
+package dev.vanilson.popularmovies.ui.view.adapters
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import dev.vanilson.popularmovies.R
-import dev.vanilson.popularmovies.model.Review
+import dev.vanilson.popularmovies.data.model.Review
 
 
 class ReviewsAdapter : RecyclerView.Adapter<ReviewsAdapter.ReviewsAdapterViewHolder?>() {
