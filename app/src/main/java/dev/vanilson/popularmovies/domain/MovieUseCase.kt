@@ -10,6 +10,6 @@ class MovieUseCase {
 //    suspend operator fun invoke(sortMode: String): List<Movie> = repository.getMovies(sortMode)
 
     suspend fun getMovies(sortMode: String): List<Movie> = repository.getMovies(sortMode)
-    suspend fun isFavorite(database: AppDatabase, movieId: Int): Boolean =
+    fun isFavorite(database: AppDatabase, movieId: Int): Boolean =
         repository.isFavorite(database, movieId)
 }

@@ -6,26 +6,25 @@ import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import dev.vanilson.popularmovies.R
 import dev.vanilson.popularmovies.data.model.Trailer
+import dev.vanilson.popularmovies.databinding.TrailerListItemBinding
 import dev.vanilson.popularmovies.utils.Constants.Companion.YOUTUBE_URL
 
 
 class TrailersAdapter : RecyclerView.Adapter<TrailersAdapter.TrailersAdapterViewHolder?>() {
     var trailers: List<Trailer>? = null
     lateinit var mContext: Context
+    lateinit var binding: TrailerListItemBinding
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrailersAdapterViewHolder {
         mContext = parent.context
-        val inflater = LayoutInflater.from(mContext)
-        val view: View = inflater.inflate(R.layout.trailer_list_item, parent, false)
-        return TrailersAdapterViewHolder(view)
+        binding = TrailerListItemBinding.inflate(LayoutInflater.from(mContext), parent, false)
+        return TrailersAdapterViewHolder(binding.root)
     }
 
     override fun onBindViewHolder(holder: TrailersAdapterViewHolder, position: Int) {
-        holder.mTrailerName.text = trailers?.get(position)?.name;
+        binding.tvTrailerName.text = trailers?.get(position)?.name;
     }
 
     override fun getItemCount(): Int {
@@ -39,8 +38,6 @@ class TrailersAdapter : RecyclerView.Adapter<TrailersAdapter.TrailersAdapterView
 
     inner class TrailersAdapterViewHolder(view: View) :
         RecyclerView.ViewHolder(view), View.OnClickListener {
-
-        val mTrailerName: TextView = view.findViewById(R.id.tv_trailer_name)
 
         override fun onClick(v: View) {
             try {
