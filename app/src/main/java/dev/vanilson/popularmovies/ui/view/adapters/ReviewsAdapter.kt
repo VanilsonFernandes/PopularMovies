@@ -2,6 +2,7 @@ package dev.vanilson.popularmovies.ui.view.adapters
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import dev.vanilson.popularmovies.data.model.Review
@@ -17,7 +18,7 @@ class ReviewsAdapter : RecyclerView.Adapter<ReviewsAdapter.ReviewsAdapterViewHol
         mContext = parent.context
 
         binding = ReviewListItemBinding.inflate(LayoutInflater.from(mContext), parent, false)
-        return ReviewsAdapterViewHolder(binding)
+        return ReviewsAdapterViewHolder(binding.root)
     }
 
     override fun onBindViewHolder(holder: ReviewsAdapterViewHolder, position: Int) {
@@ -38,6 +39,6 @@ class ReviewsAdapter : RecyclerView.Adapter<ReviewsAdapter.ReviewsAdapterViewHol
         notifyDataSetChanged()
     }
 
-    inner class ReviewsAdapterViewHolder(binding: ReviewListItemBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class ReviewsAdapterViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     }
 }

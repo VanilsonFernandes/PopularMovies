@@ -2,18 +2,11 @@ package dev.vanilson.popularmovies.ui.view
 
 import android.os.Bundle
 import android.view.View
-import android.widget.CheckBox
-import android.widget.ImageView
-import android.widget.ProgressBar
-import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
-import dev.vanilson.popularmovies.R.id
-import dev.vanilson.popularmovies.R.layout
 import dev.vanilson.popularmovies.data.database.AppDatabase
 import dev.vanilson.popularmovies.data.model.Movie
 import dev.vanilson.popularmovies.databinding.ActivityMovieDetailBinding
@@ -75,9 +68,12 @@ class MovieDetailActivity : AppCompatActivity() {
         binding.tvMovieRating.text = movie?.voteAverage.toString()
         binding.tvMovieSynopsis.text = movie?.overview
         binding.tvMovieDate.text = movie?.releaseDate
-        Picasso.get().load(IMG_POSTER_URL + movie?.backdropPath).into(binding.ivMoviePoster)
         binding.cbFavorite.isChecked = false
-
+        println(">>>> poster: " + IMG_POSTER_URL + movie?.backdropPath);
+        Picasso
+            .get()
+            .load(IMG_POSTER_URL + movie?.backdropPath)
+            .into(binding.ivMoviePoster)
 
         val reviewsVal = mMovieDetailViewModel.reviews.value
         val trailersVal = mMovieDetailViewModel.trailers.value
