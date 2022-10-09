@@ -18,14 +18,14 @@ class MoviesViewModel() : ViewModel() {
     fun getMovies(sortMode: String) {
         viewModelScope.launch {
             val result = movieUseCase.getMovies(sortMode)
-            movies.postValue(result)
+            movies.value = result
         }
     }
 
     fun getFavoriteMovies(database: AppDatabase) {
         viewModelScope.launch(Dispatchers.IO) {
-            val result = database.movieDao().getAll()
-            movies.postValue(result)
+            val movieList = movieUseCase.getFavorites(database)
+            movies.postValue(movieList)
         }
     }
 }

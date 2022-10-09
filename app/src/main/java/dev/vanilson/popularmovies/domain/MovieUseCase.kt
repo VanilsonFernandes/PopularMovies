@@ -12,4 +12,6 @@ class MovieUseCase {
     suspend fun getMovies(sortMode: String): List<Movie> = repository.getMovies(sortMode)
     fun isFavorite(database: AppDatabase, movieId: Int): Boolean =
         repository.isFavorite(database, movieId)
+    fun addToFavorite(database: AppDatabase, movie: Movie) = repository.addToFavorites(database, movie);
+    fun getFavorites(database: AppDatabase): List<Movie> = repository.getFavorites(database)
 }

@@ -69,7 +69,7 @@ class MovieDetailActivity : AppCompatActivity() {
         binding.tvMovieSynopsis.text = movie?.overview
         binding.tvMovieDate.text = movie?.releaseDate
         binding.cbFavorite.isChecked = false
-        println(">>>> poster: " + IMG_POSTER_URL + movie?.backdropPath);
+
         Picasso
             .get()
             .load(IMG_POSTER_URL + movie?.backdropPath)

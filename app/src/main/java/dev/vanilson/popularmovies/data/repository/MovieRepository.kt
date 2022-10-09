@@ -18,4 +18,8 @@ class MovieRepository {
     fun addToFavorites(database: AppDatabase, movie: Movie) {
         database.movieDao().insertAll(movie)
     }
+
+    fun getFavorites(database: AppDatabase): List<Movie> {
+        return database.movieDao().getAll()
+    }
 }
