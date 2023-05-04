@@ -2,20 +2,14 @@ package dev.vanilson.popularmovies.ui.view
 
 import android.os.Bundle
 import android.view.View
-import android.widget.CheckBox
-import android.widget.ImageView
-import android.widget.ProgressBar
-import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
-import dev.vanilson.popularmovies.R.id
-import dev.vanilson.popularmovies.R.layout
 import dev.vanilson.popularmovies.data.database.AppDatabase
 import dev.vanilson.popularmovies.data.model.Movie
+import dev.vanilson.popularmovies.databinding.ActivityMovieDetailBinding
 import dev.vanilson.popularmovies.ui.view.adapters.ReviewsAdapter
 import dev.vanilson.popularmovies.ui.view.adapters.TrailersAdapter
 import dev.vanilson.popularmovies.ui.viewModels.MovieDetailViewModel
@@ -24,49 +18,32 @@ import dev.vanilson.popularmovies.utils.Constants.Companion.IMG_POSTER_URL
 
 class MovieDetailActivity : AppCompatActivity() {
 
-    private lateinit var tvTitle: TextView
-    private lateinit var tvRating: TextView
-    private lateinit var tvSynopsis: TextView
-    private lateinit var tvDate: TextView
-    private lateinit var ivPoster: ImageView
-    private lateinit var cbFavorite: CheckBox
     private var movie: Movie? = null
-    private lateinit var mLoadingIndicator: ProgressBar
-    private lateinit var vContainer: View
-    private lateinit var rvTrailers: RecyclerView
-    private lateinit var rvReviews: RecyclerView
     private lateinit var mTrailersAdapter: TrailersAdapter
     private lateinit var mReviewsAdapter: ReviewsAdapter
 
     private val mMovieDetailViewModel: MovieDetailViewModel by viewModels()
     private val database by lazy { AppDatabase.getDatabase(this) }
 
+    private lateinit var binding: ActivityMovieDetailBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(layout.activity_movie_detail)
+        binding = ActivityMovieDetailBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
 
-        tvTitle = findViewById(id.tv_movie_title)
-        tvRating = findViewById(id.tv_movie_rating)
-        tvSynopsis = findViewById(id.tv_movie_synopsis)
-        tvDate = findViewById(id.tv_movie_date)
-        ivPoster = findViewById(id.iv_movie_poster)
-        cbFavorite = findViewById(id.cb_favorite)
-        mLoadingIndicator = findViewById(id.pb_detail_loading_indicator)
-        vContainer = findViewById(id.detail_container)
-        rvTrailers = findViewById(id.rvTrailers)
-        rvReviews = findViewById(id.rvReviews)
         mTrailersAdapter = TrailersAdapter()
         mReviewsAdapter = ReviewsAdapter()
         val trailersLayoutManager = LinearLayoutManager(this)
         val reviewsLayoutManager = LinearLayoutManager(this)
 
         trailersLayoutManager.orientation = LinearLayoutManager.VERTICAL
-        rvTrailers.setHasFixedSize(true)
-        rvTrailers.layoutManager = trailersLayoutManager
-        rvTrailers.adapter = mTrailersAdapter
-        rvTrailers.isNestedScrollingEnabled = false
-        rvTrailers.addItemDecoration(
+        binding.rvTrailers.setHasFixedSize(true)
+        binding.rvTrailers.layoutManager = trailersLayoutManager
+        binding.rvTrailers.adapter = mTrailersAdapter
+        binding.rvTrailers.isNestedScrollingEnabled = false
+        binding.rvTrailers.addItemDecoration(
             DividerItemDecoration(
                 this,
                 DividerItemDecoration.VERTICAL
@@ -74,10 +51,10 @@ class MovieDetailActivity : AppCompatActivity() {
         )
 
         reviewsLayoutManager.orientation = LinearLayoutManager.VERTICAL
-        rvReviews.setHasFixedSize(true)
-        rvReviews.layoutManager = reviewsLayoutManager
-        rvReviews.isNestedScrollingEnabled = false
-        rvReviews.adapter = mReviewsAdapter
+        binding.rvReviews.setHasFixedSize(true)
+        binding.rvReviews.layoutManager = reviewsLayoutManager
+        binding.rvReviews.isNestedScrollingEnabled = false
+        binding.rvReviews.adapter = mReviewsAdapter
 
         val selfIntent = intent
 
@@ -87,13 +64,16 @@ class MovieDetailActivity : AppCompatActivity() {
 
         movie = selfIntent.getParcelableExtra("movie")
 
-        tvTitle.text = movie?.title
-        tvRating.text = movie?.voteAverage.toString()
-        tvSynopsis.text = movie?.overview
-        tvDate.text = movie?.releaseDate
-        Picasso.get().load(IMG_POSTER_URL + movie?.backdropPath).into(ivPoster)
-        cbFavorite.isChecked = false
+        binding.tvMovieTitle.text = movie?.title
+        binding.tvMovieRating.text = movie?.voteAverage.toString()
+        binding.tvMovieSynopsis.text = movie?.overview
+        binding.tvMovieDate.text = movie?.releaseDate
+        binding.cbFavorite.isChecked = false
 
+        Picasso
+            .get()
+            .load(IMG_POSTER_URL + movie?.backdropPath)
+            .into(binding.ivMoviePoster)
 
         val reviewsVal = mMovieDetailViewModel.reviews.value
         val trailersVal = mMovieDetailViewModel.trailers.value
@@ -108,7 +88,7 @@ class MovieDetailActivity : AppCompatActivity() {
         }
 
         mMovieDetailViewModel.isFavorite.observe(this) {
-            cbFavorite.isChecked = it
+            binding.cbFavorite.isChecked = it
         }
 
         if (reviewsVal == null && trailersVal == null) {
@@ -130,18 +110,18 @@ class MovieDetailActivity : AppCompatActivity() {
     }
 
     private fun showData() {
-        vContainer.visibility = View.VISIBLE
-        mLoadingIndicator.visibility = View.GONE
+        binding.detailContainer.visibility = View.VISIBLE
+        binding.pbDetailLoadingIndicator.visibility = View.GONE
     }
 
     fun toggleFavorite(view: View) {
         if (movie != null) {
             if (isFavorite()) {
                 mMovieDetailViewModel.removeFromFavorites(database, movie!!)
-                cbFavorite.isChecked = false
+                binding.cbFavorite.isChecked = false
             } else {
                 mMovieDetailViewModel.addToFavorites(database, movie!!)
-                cbFavorite.isChecked = true
+                binding.cbFavorite.isChecked = true
             }
         }
     }

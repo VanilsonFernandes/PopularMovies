@@ -17,7 +17,7 @@ class MovieDetailViewModel() : ViewModel() {
 
     var reviewUseCase = ReviewUseCase()
     var trailerUseCase = TrailerUseCase()
-    var movieUseCase = MovieUseCase()
+    private var movieUseCase = MovieUseCase()
 
     var reviews: MutableLiveData<List<Review>> = MutableLiveData()
     var trailers: MutableLiveData<List<Trailer>> = MutableLiveData()
@@ -48,7 +48,7 @@ class MovieDetailViewModel() : ViewModel() {
 
     fun addToFavorites(database: AppDatabase, movie: Movie) {
         viewModelScope.launch(Dispatchers.IO) {
-            database.movieDao().insertAll(movie)
+            movieUseCase.addToFavorite(database, movie)
         }
     }
 

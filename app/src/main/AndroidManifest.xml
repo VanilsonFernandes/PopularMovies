@@ -16,6 +16,7 @@
         tools:targetApi="n">
         <activity
             android:name=".ui.view.MainActivity"
+            android:screenOrientation="portrait"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,6 +27,7 @@
         <activity
             android:name=".ui.view.MovieDetailActivity"
             android:parentActivityName=".ui.view.MainActivity"
+            android:screenOrientation="portrait"
             android:exported="true">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

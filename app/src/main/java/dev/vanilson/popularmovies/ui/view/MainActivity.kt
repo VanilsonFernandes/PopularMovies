@@ -4,16 +4,12 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.ProgressBar
-import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import dev.vanilson.popularmovies.R
-import dev.vanilson.popularmovies.R.id
-import dev.vanilson.popularmovies.R.layout
 import dev.vanilson.popularmovies.data.database.AppDatabase
+import dev.vanilson.popularmovies.databinding.ActivityMainBinding
 import dev.vanilson.popularmovies.ui.view.adapters.MoviesAdapter
 import dev.vanilson.popularmovies.ui.viewModels.MoviesViewModel
 import dev.vanilson.popularmovies.utils.Constants.Companion.FAVORITE_SORTING
@@ -24,9 +20,6 @@ import dev.vanilson.popularmovies.utils.Constants.Companion.TOP_RATED_SORTING
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var mRecyclerView: RecyclerView
-    private lateinit var mErrorMessageDisplay: TextView
-    private lateinit var mLoadingIndicator: ProgressBar
     private lateinit var mMoviesAdapter: MoviesAdapter
     private val mMoviesViewModel: MoviesViewModel by viewModels()
     private var showingFavorites = false
@@ -35,22 +28,23 @@ class MainActivity : AppCompatActivity() {
 
     private val database by lazy { AppDatabase.getDatabase(this) }
 
+    private lateinit var binding: ActivityMainBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
 
-        mRecyclerView = findViewById(id.movies_recyclerview)
-        mErrorMessageDisplay = findViewById(id.tv_error_message_display)
-        mLoadingIndicator = findViewById(id.pb_loading_indicator)
         mMoviesAdapter = MoviesAdapter()
 
         val layoutManager = GridLayoutManager(this, NUMBER_OF_COLUMNS)
 
-        mRecyclerView.layoutManager = layoutManager
-        mRecyclerView.setHasFixedSize(true)
-        mRecyclerView.adapter = mMoviesAdapter
+        binding.moviesRecyclerview.layoutManager = layoutManager
+        binding.moviesRecyclerview.setHasFixedSize(true)
+        binding.moviesRecyclerview.adapter = mMoviesAdapter
 
-        mLoadingIndicator.visibility = View.VISIBLE;
+        binding.pbLoadingIndicator.visibility = View.VISIBLE
 
         mMoviesViewModel.movies.observe(this) { movies ->
             mMoviesAdapter.updateMovies(movies)
@@ -59,7 +53,7 @@ class MainActivity : AppCompatActivity() {
             } else {
                 showErrorMessage()
             }
-            mLoadingIndicator.visibility = View.INVISIBLE;
+            binding.pbLoadingIndicator.visibility = View.INVISIBLE
         }
 
     }
@@ -74,7 +68,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        outState.putBoolean(SHOWING_FAVORITES_KEY, showingFavorites);
+        outState.putBoolean(SHOWING_FAVORITES_KEY, showingFavorites)
         super.onSaveInstanceState(outState)
     }
 
@@ -85,22 +79,22 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun loadData(sortMode: String) {
-        mLoadingIndicator.visibility = View.VISIBLE;
+        binding.pbLoadingIndicator.visibility = View.VISIBLE
         if (sortMode == FAVORITE_SORTING) {
             mMoviesViewModel.getFavoriteMovies(database)
             return
         }
-        mMoviesViewModel.getMovies(sortMode);
+        mMoviesViewModel.getMovies(sortMode)
     }
 
     private fun showErrorMessage() {
-        mRecyclerView.setVisibility(View.INVISIBLE)
-        mErrorMessageDisplay.setVisibility(View.VISIBLE)
+        binding.moviesRecyclerview.visibility = View.INVISIBLE
+        binding.tvErrorMessageDisplay.visibility = View.VISIBLE
     }
 
     private fun showDataView() {
-        mErrorMessageDisplay.setVisibility(View.INVISIBLE)
-        mRecyclerView.setVisibility(View.VISIBLE)
+        binding.tvErrorMessageDisplay.visibility = View.INVISIBLE
+        binding.moviesRecyclerview.visibility = View.VISIBLE
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -110,7 +104,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val id: Int = item.getItemId()
+        val id: Int = item.itemId
         if (id == R.id.miTopRated) {
             showingFavorites = false
             mMoviesAdapter.movies = null
